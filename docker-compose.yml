@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  backend:
+    networks:
+      - prv-net
+    container_name: backend
+    build: .\backend
+    ports:
+      - "8085:8089"   
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/jobTest?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=hazem123
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://serviceregistry:8761/eureka/   
+    image: "backend"
+    restart: unless-stopped
+    depends_on:
+      - Eureka
+      - mysqldb
+ 
+  Eureka:
+    networks:
+      - prv-net
+    container_name: eureka
+    build: .\eureka1
+    ports:
+      - "8761:8761"   
+    image: "eureka"
+    hostname: serviceregistry
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://serviceregistry:8761/eureka/
+  
+  mysqldb:
+      networks:
+        - prv-net
+      image: "mysql"
+      container_name: mysqldb  
+      environment:
+        - MYSQL_ROOT_PASSWORD=hazem123
+        - MYSQL_DATABASE=jobTest
+      ports:
+        - "3307:3306"
+      restart: unless-stopped  
+
+networks:
+  prv-net:
