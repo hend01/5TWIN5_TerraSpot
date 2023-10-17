@@ -1,0 +1,6 @@
+com/esprit/ms/event/EventNotFoundException.class
+com/esprit/ms/event/Event.class
+com/esprit/ms/event/EventController.class
+com/esprit/ms/event/EventService.class
+com/esprit/ms/event/EventMsApplication.class
+com/esprit/ms/event/EventRepository.class
