@@ -1,0 +1,35 @@
+version: "3"
+services:
+  event-ms:
+    image: event-ms
+    build: .
+    restart: always
+    ports:
+      - 8088:8088
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    networks:
+      - my-network
+  mysqldb:
+    container_name: mysqldb
+    image: "mysql:8"
+    environment:
+      MYSQL_DATABASE: Event-MS
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3307:3306
+    networks:
+      - my-network
+  eureka-server:
+    image: eureka-docker
+    restart: always
+    ports:
+      - 8761:8761
+    networks:
+      - my-network
+networks:
+  my-network:
