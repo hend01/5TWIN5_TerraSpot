@@ -1,0 +1,4 @@
+FROM openjdk:8
+EXPOSE 8051
+ADD target/API_Gateway_server-0.0.1-SNAPSHOT.jar API-Gateway-Server.jar
+ENTRYPOINT ["java", "-jar", "API-Gateway-Server.jar"]
