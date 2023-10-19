@@ -2,6 +2,7 @@ package terraspot.esprit.tn.terraspot.Service;
 
 import terraspot.esprit.tn.terraspot.Entity.Reservation;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IService {
@@ -10,4 +11,5 @@ public interface IService {
     public Reservation update_reservation(Long id, Reservation updatedReservation) ;
     public void remove_reservation(Long idReservation) ;
     public Reservation findById(Long id) ;
+    public List<Reservation> findReservationsByDate(LocalDate date) ;
     }

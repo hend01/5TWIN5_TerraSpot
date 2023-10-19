@@ -1,6 +1,7 @@
 package terraspot.esprit.tn.terraspot.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import terraspot.esprit.tn.terraspot.Repository.ReservationRepository;
 import terraspot.esprit.tn.terraspot.Service.IService;
 import terraspot.esprit.tn.terraspot.Service.ReservationService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +57,16 @@ public class ReservationController {
 
         if (foundReservation != null) {
             return ResponseEntity.ok(foundReservation);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    @GetMapping("/findByDate/{date}")
+    public ResponseEntity<List<Reservation>> findReservationsByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<Reservation> reservations = service.findReservationsByDate(date);
+
+        if (!reservations.isEmpty()) {
+            return ResponseEntity.ok(reservations);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

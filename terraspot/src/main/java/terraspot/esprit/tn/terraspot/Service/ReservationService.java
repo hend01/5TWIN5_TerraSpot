@@ -10,6 +10,8 @@ import terraspot.esprit.tn.terraspot.Entity.Reservation;
 import terraspot.esprit.tn.terraspot.Repository.ReservationRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,5 +52,8 @@ public class ReservationService implements IService {
     }
 
 
-
+    @Override
+    public List<Reservation> findReservationsByDate(LocalDate date) {
+        return repository.findByDate(date);
+    }
 }
