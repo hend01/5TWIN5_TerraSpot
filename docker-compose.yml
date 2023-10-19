@@ -2,7 +2,7 @@ version: "3"
 services:
   event-ms:
     image: event-ms
-    build: .
+    build: /EventMS
     restart: always
     ports:
       - 8088:8088
@@ -29,6 +29,24 @@ services:
     restart: always
     ports:
       - 8761:8761
+    networks:
+      - my-network
+  Apigateway:
+    ports:
+      - 8086:8086
+    image: "gateway-server:v1"
+    build: /API-Gateway-Server
+    restart: always
+    depends_on:
+      - eureka-server
+      - event-ms
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_LEASERENEWALINTERVALINSECONDS: 10
+      EUREKA_INSTANCE_LEASEEXPIRATIONDURATIONINSECONDS: 30
+      SPRING_CLOUD_GATEWAY_ROUTES_0_ID: EventServices
+      SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://event-ms:8088
+      SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/events/**
     networks:
       - my-network
 networks:
