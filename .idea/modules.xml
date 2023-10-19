@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/MicroService.iml" filepath="$PROJECT_DIR$/.idea/MicroService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka1/eureka1.iml" filepath="$PROJECT_DIR$/eureka1/eureka1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/keycloak-springboot-microservice.iml" filepath="$PROJECT_DIR$/backend/keycloak-springboot-microservice.iml" />
+    </modules>
+  </component>
+</project>
