@@ -2,7 +2,7 @@ version: "3"
 services:
   event-ms:
     image: event-ms
-    build: .
+    build: ./DockerMS/EventMS
     restart: always
     ports:
       - 8088:8088
@@ -35,6 +35,7 @@ services:
     ports:
       - 8086:8086
     image: "gateway-server:v1"
+    build: ./DockerMS/API-Gateway-Server
     restart: always
     depends_on:
       - eureka-server

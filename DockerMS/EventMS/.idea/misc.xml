@@ -5,6 +5,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/DockerMS/API-Gateway-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/DockerMS/eureka/pom.xml" />
       </list>
     </option>
   </component>
