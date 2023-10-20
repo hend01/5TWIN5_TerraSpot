@@ -1,0 +1,5 @@
+{
+    "mongo" : {
+        "uri" : "mongodb://root:example@db:27017/"
+    }
+}
