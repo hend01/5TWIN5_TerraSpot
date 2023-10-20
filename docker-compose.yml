@@ -1,0 +1,91 @@
+version: "2.4"
+services:
+
+  ReclamationServer:
+    container_name: ReclamationManagements
+    build: .\Gestion_Reclamation
+    ports:
+      - "8760:8082"
+    hostname: ReclamationManagements
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/reclamationdb?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+    image: gestionreclamation:v4
+    depends_on:
+      - Eureka
+      - db-mysql
+  
+  db-mysql:
+    image: "mysql:5.6"
+    container_name: db-mysql  
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      #- MYSQL_DATABASE=job
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+
+  db:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+  
+  app:
+    build: .\GestionE-commerce
+    restart: always
+    ports:
+      - '5000:5000'
+    hostname: EcommerceManagements
+    environment:
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+    image: gestionecommerce
+    depends_on:
+      - Eureka
+      - db
+
+
+  Eureka:
+    container_name: EurekaServer
+    build: .\EurekaServerMicroService
+    ports:
+      - "8761:8761"
+    hostname: EurekaServer
+    image: "eureka:v2"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+  
+  Apigateway:
+    container_name: apigatewayserverv1
+    build : ./API_Gateway_server
+    ports:
+      - 8086:8086
+    image: "apigatewayserver:v1"
+    restart: always
+    depends_on:
+      - Eureka
+      - ReclamationServer
+      - app
+      
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE : http://Eureka:8761/eureka/
+      EUREKA_INSTANCE_LEASERENEWALINTERVALINSECONDS: 10
+      EUREKA_INSTANCE_LEASEEXPIRATIONDURATIONINSECONDS: 30
+
+      SPRING_CLOUD_GATEWAY_ROUTES_0_ID : ReclamationServices
+      SPRING_CLOUD_GATEWAY_ROUTES_0_URI : http://ReclamationServer:8082
+      SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0 : Path=/api/Reclamation/**
+
+      SPRING_CLOUD_GATEWAY_ROUTES_1_ID: EcommerceServices
+      SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://app:5000
+      SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/produit/**
+      
+volumes:
+  mongo-data:
