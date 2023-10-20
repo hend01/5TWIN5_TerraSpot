@@ -1,0 +1,4 @@
+FROM openjdk:8
+EXPOSE 8080
+ADD target/GestionTerrainMS-0.0.1-SNAPSHOT.jar GestionTerrainMS-docker.jar
+ENTRYPOINT ["java", "-jar", "GestionTerrainMS-docker.jar"]
