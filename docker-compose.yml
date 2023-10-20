@@ -27,3 +27,16 @@ services:
       dockerfile: C:\Users\amino\OneDrive\Bureau\Architecture MSA\eurekaserver\dockerfile
     ports:
       - "8761:8761"
+
+
+
+      apigateway:
+    build:
+      context: C:\Users\amino\OneDrive\Bureau\Architecture MSA\
+      dockerfile: C:\Users\amino\OneDrive\Bureau\Architecture MSA\dockerfile
+    ports:
+      - "8086:8086" 
+    depends_on:
+      - eurekaserver
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka/
