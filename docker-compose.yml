@@ -1,0 +1,40 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: C:\Users\hendc\OneDrive\Desktop\terraspot\terraspot
+      dockerfile: C:\Users\hendc\OneDrive\Desktop\terraspot\terraspot\Dockerfile
+    ports:
+      - "8088:8088"
+    depends_on:
+      - mabasededonnes
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mabasededonnes:3306/teraspotms
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+
+  mabasededonnes:
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: teraspotms
+
+  eurekaserver:
+    build:
+      context: C:\Users\hendc\OneDrive\Desktop\terraspot\eurekaserver
+      dockerfile: C:\Users\hendc\OneDrive\Desktop\terraspot\eurekaserver\dockerfile
+    ports:
+      - "8761:8761"
+
+  apigateway:
+    build:
+      context: C:\Users\hendc\OneDrive\Desktop\terraspot\ApiGateway
+      dockerfile: C:\Users\hendc\OneDrive\Desktop\terraspot\ApiGateway\dockerfile
+    ports:
+      - "8086:8086" 
+    depends_on:
+      - eurekaserver
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka/
