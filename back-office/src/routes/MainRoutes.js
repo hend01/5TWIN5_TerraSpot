@@ -22,6 +22,10 @@ const AddProduit = Loadable(lazy(() => import('pages/produit/AddProduit')));
 const ProduitDetail = Loadable(lazy(() => import('pages/produit/DetailProduit')));
 const UpdateProduit = Loadable(lazy(() => import('pages/produit/UpdateProduit')));
 
+// render - reclamation
+const ReclamationList = Loadable(lazy(() => import('pages/reclamation/ListReclamation')));
+const ReclamationDetail = Loadable(lazy(() => import('pages/reclamation/DetailReclamation')));
+
 // render - event
 const AddEvent = Loadable(lazy(() => import('pages/events/AddEvent')));
 
@@ -66,6 +70,15 @@ const MainRoutes = {
       element: <AddEvent />
     },
     {
+      path: 'reclamation-list',
+      element: <ReclamationList />
+    },
+    {
+      path: 'reclamations/:reclamationId',
+      element: <ReclamationDetail />
+    },
+
+    {
       path: 'commande-list',
       element: <CommandeList />
     },
@@ -77,6 +90,7 @@ const MainRoutes = {
       path: 'commandes/edit/:commandeId',
       element: <UpdateCommande />
     },
+
     {
       path: 'dashboard',
       children: [
