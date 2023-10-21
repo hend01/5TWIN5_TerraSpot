@@ -10,6 +10,7 @@ import Cart from "./components/cart/Cart";
 import Checkout from "./components/checkout/Checkout";
 import Reclamation from "./components/reclamation/addReclamation";
 import HomeRes from "./components/home/HomeRes";
+import Events from "./components/Events/Events";
 
 function App() {
   return (
@@ -23,8 +24,10 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/reclamation" element={<Reclamation />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/Notfound" element={<NotFound />} />
-          <Route path="*" element={<NotFound />} /> {/* Route générique pour toutes les autres URL */}
+          <Route path="*" element={<NotFound />} />{" "}
+          {/* Route générique pour toutes les autres URL */}
         </Routes>
         <Footer />
       </CartProvider>
