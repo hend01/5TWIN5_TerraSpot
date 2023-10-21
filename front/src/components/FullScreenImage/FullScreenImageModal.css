@@ -1,0 +1,43 @@
+/* Styles pour la modal en plein écran */
+.fullscreen-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.8
+  ); /* Fond semi-transparent pour l'arrière-plan */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ajustez le niveau de z-index selon vos besoins */
+}
+
+/* Styles pour l'image en plein écran */
+.fullscreen-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Ajustez selon vos besoins */
+}
+
+/* Styles pour le bouton de fermeture */
+.fullscreen-modal button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 20px;
+}
+/* Styles pour le composant `DetailProduit` lorsque le modal est ouvert */
+.page-content.modal-opened {
+  /* Ajoutez ici les styles pour masquer tout le contenu en arrière-plan */
+  filter: blur(4px); /* Par exemple, flou du contenu en arrière-plan */
+  pointer-events: none; /* Désactive les événements sur le contenu en arrière-plan */
+}
