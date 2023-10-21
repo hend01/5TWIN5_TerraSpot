@@ -9,7 +9,7 @@ const Home = () => {
   useEffect(() => {
     // Fetch events data from an API
     axios
-      .get("http://localhost:8088/events")
+      .get("http://localhost:8086/events/")
       .then((response) => {
         setEvents(response.data);
         setIsLoading(false);
@@ -25,27 +25,47 @@ const Home = () => {
       <main className="main">
         <div className="container">
           <div className="row">
-            <div className="col-lg-9">
+            <div className="col-lg-16">
               <div className="products mb-3">
                 {isLoading ? (
                   <div className="loading-indicator">Loading...</div>
                 ) : (
-                  <div className="row">
-                    {events.map((event) => (
-                      <div key={event.id} className="col-md-4">
-                        <div className="event-card">
-                          <h3>{event.eventName}</h3>
-                          <p>{event.description}</p>
-                          <p>Start Date: {event.startDate}</p>
-                          <p>End Date: {event.endDate}</p>
-                          <p>Location: {event.location}</p>
-                          <p>Sport Type: {event.sportType}</p>
-                          <p>Max Participants: {event.maxParticipants}</p>
-                          <p>Registration Price: {event.registrationPrice}</p>
+                  <>
+                    <div className="event-cards-container">
+                      {events.map((event) => (
+                        <div key={event.id} className="entry-item">
+                          <article className="entry entry-grid text-center">
+                            <figure className="entry-media">
+                              <a href="single.html">
+                                <img
+                                  src="/assets/images/evenement-sportif.jpg"
+                                  alt="image desc"
+                                  width="50"
+                                  height="50"
+                                />
+                              </a>
+                            </figure>
+
+                            <div className="entry-body">
+                              <h2 className="entry-title">
+                                <a href="single.html">{event.eventName}</a>
+                              </h2>
+
+                              <div className="entry-cats">
+                                in <a href="#">{event.sportType}</a>
+                              </div>
+                              <div className="entry-cats">
+                                Description <a href="#">{event.description}</a>
+                              </div>
+                              <div className="entry-cats">
+                                Price <a href="#">{event.registrationPrice}</a>
+                              </div>
+                            </div>
+                          </article>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
             </div>
