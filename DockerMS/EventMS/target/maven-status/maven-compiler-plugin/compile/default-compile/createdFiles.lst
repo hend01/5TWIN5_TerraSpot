@@ -2,5 +2,6 @@ com/esprit/ms/event/Controller/EventController.class
 com/esprit/ms/event/EventNotFoundException.class
 com/esprit/ms/event/Repository/EventRepository.class
 com/esprit/ms/event/Service/EventService.class
+com/esprit/ms/event/Configuration/CorsConfig.class
 com/esprit/ms/event/Entity/Event.class
 com/esprit/ms/event/EventMsApplication.class
