@@ -28,6 +28,9 @@ const ReclamationDetail = Loadable(lazy(() => import('pages/reclamation/DetailRe
 
 // render - event
 const AddEvent = Loadable(lazy(() => import('pages/events/AddEvent')));
+const ListEvent = Loadable(lazy(() => import('pages/events/ListEvents')));
+const UpdateEvent = Loadable(lazy(() => import('pages/events/UpdateEvents')));
+const DetailEvent = Loadable(lazy(() => import('pages/events/DetailEvent')));
 
 // render - commande
 const CommandeList = Loadable(lazy(() => import('pages/commandes/ListCommande')));
@@ -68,6 +71,18 @@ const MainRoutes = {
     {
       path: 'add-event',
       element: <AddEvent />
+    },
+    {
+      path: 'events-list',
+      element: <ListEvent />
+    },
+    {
+      path: 'events/:eventId',
+      element: <UpdateEvent />
+    },
+    {
+      path: 'events/detail/:eventId',
+      element: <DetailEvent />
     },
     {
       path: 'reclamation-list',

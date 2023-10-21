@@ -64,7 +64,7 @@ const AddEvent = () => {
       errors.maxParticipants = '☹︎ Nombre maximale de participants est requis';
     }
     if (!values.registrationPrice) {
-      errors.registrationPrice = '☹︎ Pris est requis';
+      errors.registrationPrice = '☹︎ Prix est requis';
     }
 
     // Vous pouvez ajouter des validations supplémentaires pour les autres champs ici
@@ -75,15 +75,24 @@ const AddEvent = () => {
   const handleSubmit = async (values) => {
     try {
       setIsLoading(true);
-      await axios.post('http://localhost:8086/events/', values).then((response) => {
-        console.log(response);
-        navigate('/event-list');
-      });
+
+      axios
+        .post('http://localhost:8088/events/', values, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then((response) => {
+          console.log('Response:', response);
+          navigate('/events-list');
+        });
+
       setIsLoading(false);
     } catch (error) {
-      console.error(error);
+      console.error('Error:', error);
     }
   };
+
   return (
     <Container>
       <Paper elevation={3} style={{ padding: '16px' }}>
@@ -104,7 +113,7 @@ const AddEvent = () => {
                   <TextField
                     required
                     label="StartDate"
-                    type="datetime-local"
+                    type="date"
                     {...field}
                     fullWidth
                     InputLabelProps={{
@@ -120,7 +129,7 @@ const AddEvent = () => {
                   <TextField
                     required
                     label="endDate"
-                    type="datetime-local"
+                    type="date"
                     {...field}
                     fullWidth
                     InputLabelProps={{
