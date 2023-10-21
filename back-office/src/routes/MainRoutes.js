@@ -21,7 +21,10 @@ const ProduitList = Loadable(lazy(() => import('pages/produit/ListProduit')));
 const AddProduit = Loadable(lazy(() => import('pages/produit/AddProduit')));
 const ProduitDetail = Loadable(lazy(() => import('pages/produit/DetailProduit')));
 const UpdateProduit = Loadable(lazy(() => import('pages/produit/UpdateProduit')));
-
+// render - terrain
+const ListTerrain = Loadable(lazy(() => import('pages/Terrain/ListTerrain')));
+const AddTerrain = Loadable(lazy(() => import('pages/Terrain/AddTerrain')));
+const UpdateTerrain = Loadable(lazy(() => import('pages/Terrain/UpdateTerrain')));
 // render - reclamation
 const ReclamationList = Loadable(lazy(() => import('pages/reclamation/ListReclamation')));
 const ReclamationDetail = Loadable(lazy(() => import('pages/reclamation/DetailReclamation')));
@@ -50,6 +53,18 @@ const MainRoutes = {
     {
       path: 'color',
       element: <Color />
+    },
+    {
+      path: 'terrain-list',
+      element: <ListTerrain />
+    },
+    {
+      path: 'add-terrain',
+      element: <AddTerrain />
+    },
+    {
+      path: 'update-terrain',
+      element: <UpdateTerrain />
     },
 
     {
