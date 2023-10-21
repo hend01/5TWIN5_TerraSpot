@@ -35,7 +35,7 @@ services:
     ports:
       - 8086:8086
     image: "gateway-server:v1"
-    build: ./DockerMS/API-Gateway-Server
+    build: ./DockerMS/API_Gateway_server
     restart: always
     depends_on:
       - eureka-server

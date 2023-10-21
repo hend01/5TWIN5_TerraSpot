@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.esprit</groupId>
-	<artifactId>Event</artifactId>
+	<artifactId>Event-MS</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Event-MS</name>
 	<description>Event-MS</description>
