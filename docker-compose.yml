@@ -1,0 +1,193 @@
+version: "3.8"
+services:
+  terrain:
+    build:
+      context: C:\Users\Hazem\Desktop\5TWIN5_TerraSpot\GestionTerrainMS\
+      dockerfile: C:\Users\Hazem\Desktop\5TWIN5_TerraSpot\GestionTerrainMS\dockerfile
+    ports:
+      - "8087:8087"
+    depends_on:
+      - db-mysql
+    environment:
+      - SPRING_DATASOURCE_URL= jdbc:mysql://db-mysql:3306/terrainamine?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=hazem123
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+
+  ReclamationServer:
+    container_name: ReclamationManagements
+    build: .\Gestion_Reclamation
+    ports:
+      - "8760:8082"
+    hostname: ReclamationManagements
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/reclamationdb?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=hazem123
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+    image: gestionreclamation:v4
+    depends_on:
+      - Eureka
+      - db-mysql
+
+  db-mysql:
+    image: "mysql:5.6"
+    container_name: db-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=hazem123
+      #- MYSQL_DATABASE=job
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+
+  db:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+
+  app:
+    build: .\GestionE-commerce
+    restart: always
+    ports:
+      - '5000:5000'
+    hostname: EcommerceManagements
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+    image: gestionecommerce
+    depends_on:
+      - Eureka
+      - db
+
+  Eureka:
+    container_name: EurekaServer
+    build: .\EurekaServerMicroService
+    ports:
+      - "8761:8761"
+    hostname: EurekaServer
+    image: "eureka:v2"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+
+  userms:
+    container_name: userms
+    build: .\userms
+    ports:
+      - "5006:5005"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/UserMs?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=hazem123
+      - spring.application.name=user
+      - app.jwt.secret= RandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKey
+      - app.jwt.expiration-in-ms=86400000
+      - authentication.internal-api-key= InternalApiKey1234!
+      - app.WILIO_ACCOUNT_SID=AC9c2b8364c58625a4ec1fde890d743515
+      - app.TWILIO_AUTH_TOKEN=024f2a78fd1d21331568975436d5cbcf
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+    image: userms
+    restart: unless-stopped
+    depends_on:
+      - db-mysql
+      - Eureka
+  terraspot:
+    build:
+      context: C:\Users\Hazem\Desktop\5TWIN5_TerraSpot\terraspot
+      dockerfile: C:\Users\Hazem\Desktop\5TWIN5_TerraSpot\terraspot\Dockerfile
+    ports:
+      - "8091:8091"
+    depends_on:
+      - db-mysql
+    environment:
+      - SPRING_DATASOURCE_URL= jdbc:mysql://db-mysql:3306/teraspotms?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=hazem123
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+
+  event-ms:
+    image: event-ms
+    build: C:\Users\Hazem\Desktop\5TWIN5_TerraSpot\EventMS
+    ports:
+      - 8188:8188
+    environment:
+      - MYSQL_HOST= db-mysql
+      - MYSQL_USER= root
+      - MYSQL_PASSWORD= hazem123
+      - MYSQL_PORT= 3306
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+    depends_on:
+      - db-mysql
+      - Eureka
+  backend:
+    container_name: backend
+    build: .\keyckoak
+    ports:
+      - "8085:8089"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/UserMs?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=hazem123
+      - spring_application_name=keycloak
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+      - keycloak_public-client=true
+      - keycloak_bearer-only=true
+      - keycloak_use-resource-role-mappings=true
+      - keycloak_ssl-required=external
+      - app_WILIO_ACCOUNT_SID=AC111774e6204e5f439c3e61f2f244ef4c
+      - app_TWILIO_AUTH_TOKEN=85124ceb2da787048512fb9bd33c3c3e
+    image: "backend"
+    restart: unless-stopped
+    depends_on:
+      - Eureka
+      - db-mysql
+
+  Apigateway:
+    container_name: apigatewayserverv1
+    build: ./API_Gateway_server
+    ports:
+      - 8086:8086
+    image: "apigatewayserver:v1"
+    restart: always
+    depends_on:
+      - Eureka
+      - db-mysql
+      - app
+
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://Eureka:8761/eureka/
+      EUREKA_INSTANCE_LEASERENEWALINTERVALINSECONDS: 10
+      EUREKA_INSTANCE_LEASEEXPIRATIONDURATIONINSECONDS: 30
+
+      SPRING_CLOUD_GATEWAY_ROUTES_0_ID: ReclamationServices
+      SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://ReclamationServer:8082
+      SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/Reclamation/**
+
+      SPRING_CLOUD_GATEWAY_ROUTES_1_ID: EcommerceServices
+      SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://app:5000
+      SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/produit/**
+
+      SPRING_CLOUD_GATEWAY_ROUTES_2_ID: TerrainMS
+      SPRING_CLOUD_GATEWAY_ROUTES_2_URI: http://terrain:8087
+      SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0: Path=/Terrain/**
+
+      SPRING_CLOUD_GATEWAY_ROUTES_3_ID: UserMs
+      SPRING_CLOUD_GATEWAY_ROUTES_3_URI: http://userms:5006
+      SPRING_CLOUD_GATEWAY_ROUTES_3_PREDICATES_0: Path=/user/**
+
+      SPRING_CLOUD_GATEWAY_ROUTES_4_ID: terraspot
+      SPRING_CLOUD_GATEWAY_ROUTES_4_URI: http://terraspot:8091
+      SPRING_CLOUD_GATEWAY_ROUTES_4_PREDICATES_0: Path=/terraspot/**
+
+      SPRING_CLOUD_GATEWAY_ROUTES_5_ID: terraspot
+      SPRING_CLOUD_GATEWAY_ROUTES_5_URI: http://event-ms:8188
+      SPRING_CLOUD_GATEWAY_ROUTES_5_PREDICATES_0: Path=/events/**
+
+volumes:
+  mongo-data:
+
+

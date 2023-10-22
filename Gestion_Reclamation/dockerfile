@@ -1,0 +1,4 @@
+FROM openjdk:8
+EXPOSE 8760
+ADD target/Gestion_Reclamation-0.0.1-SNAPSHOT.jar Gestion_Reclamation-0.0.1.jar
+ENTRYPOINT ["java" , "-jar" , "Gestion_Reclamation-0.0.1.jar"]
