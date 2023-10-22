@@ -51,7 +51,7 @@ const AddReclamation = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8086/api/Reclamation/add",
+        "http://localhost:8082/api/Reclamation/add",
         formData
       );
 

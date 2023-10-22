@@ -113,7 +113,7 @@ const UpdateProduit = () => {
       const uploadedImageUrls = await Promise.all(uploadPromises);
       produitData.images = uploadedImageUrls;
 
-      await axios.put(`http://localhost:8086/produit/updateProduit/${produitId}`, produitData);
+      await axios.put(`http://localhost:5000/produit/updateProduit/${produitId}`, produitData);
 
       setIsLoading(false);
       navigate('/produit-list');

@@ -115,7 +115,7 @@ const Checkout = () => {
 
       try {
         await toast.promise(
-          axios.post("http://localhost:8086/commande/commandes", requestBody),
+          axios.post("http://localhost:5000/commande/commandes", requestBody),
           {
             loading: "Enregistrement en cours...",
             success: <b>Commande validé!</b>,

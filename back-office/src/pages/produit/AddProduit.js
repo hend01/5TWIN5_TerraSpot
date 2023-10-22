@@ -105,7 +105,7 @@ const AddProduit = () => {
       const uploadedImageUrls = await Promise.all(uploadPromises);
       produitData.images = uploadedImageUrls;
 
-      await axios.post('http://localhost:8086/produit/addProduit', produitData);
+      await axios.post('http://localhost:5000/produit/addProduit', produitData);
 
       setIsLoading(false);
       navigate('/produit-list');
