@@ -1,46 +1,100 @@
 version: "3.9"
 services:
-  backend:
-    networks:
-      - prv-net
-    container_name: backend
-    build: .\backend
+
+  userms:
+    container_name: userms
+    build: .\userms
     ports:
-      - "8085:8089"   
+      - "5006:5005"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/jobTest?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/UserMs?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=hazem123
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://serviceregistry:8761/eureka/   
-    image: "backend"
+      - spring.application.name=user
+      - app.jwt.secret= RandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKeyRandomSecretKey
+      - app.jwt.expiration-in-ms=86400000
+      - authentication.internal-api-key= InternalApiKey1234!
+      - app.WILIO_ACCOUNT_SID=AC9c2b8364c58625a4ec1fde890d743515
+      - app.TWILIO_AUTH_TOKEN=024f2a78fd1d21331568975436d5cbcf
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+    image: userms
     restart: unless-stopped
     depends_on:
-      - Eureka
       - mysqldb
- 
+      - Eureka
+
   Eureka:
-    networks:
-      - prv-net
     container_name: eureka
     build: .\eureka1
     ports:
-      - "8761:8761"   
+      - "8761:8761"
     image: "eureka"
     hostname: serviceregistry
     environment:
       - eureka.client.serviceUrl.defaultZone=http://serviceregistry:8761/eureka/
-  
-  mysqldb:
-      networks:
-        - prv-net
-      image: "mysql"
-      container_name: mysqldb  
-      environment:
-        - MYSQL_ROOT_PASSWORD=hazem123
-        - MYSQL_DATABASE=jobTest
-      ports:
-        - "3307:3306"
-      restart: unless-stopped  
 
-networks:
-  prv-net:
+  mysqldb:
+    image: "mysql"
+    container_name: mysqldb
+    environment:
+      - MYSQL_ROOT_PASSWORD=hazem123
+      - MYSQL_DATABASE=UserMs
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:12.0.4
+    container_name: keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    depends_on:
+      - mysqldb
+
+  keycloakc:
+    container_name: keycloak
+    build: .\keyckoak
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/UserMs?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=hazem123
+      - spring_application_name=keycloak
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://Eureka:8761/eureka/
+    image: "keycloak"
+    restart: unless-stopped
+    depends_on:
+      - Eureka
+      - db-mysql
+
+  Apigateway:
+    container_name: apigatewayserverv1
+    build: ./API_Gateway_server
+    ports:
+      - 8086:8086
+    image: "apigatewayserver:v1"
+    restart: always
+    depends_on:
+      - Eureka
+      - mysqldb
+
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://serviceregistry:8761/eureka/
+      EUREKA_INSTANCE_LEASERENEWALINTERVALINSECONDS: 10
+      EUREKA_INSTANCE_LEASEEXPIRATIONDURATIONINSECONDS: 30
+
+      SPRING_CLOUD_GATEWAY_ROUTES_0_ID: UserMs
+      SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://userms:5006
+      SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/user/**
+
+      SPRING_CLOUD_GATEWAY_ROUTES_1_ID: terraspot
+      SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://event-ms:8188
+      SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/events/**
+
+      SPRING_CLOUD_GATEWAY_ROUTES_2_ID: keycloakc
+      SPRING_CLOUD_GATEWAY_ROUTES_2_URI: http://keycloakc:8089
+      SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0: Path=/key/**
