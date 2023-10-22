@@ -124,13 +124,8 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-<<<<<<< HEAD
                     <Link to="/terrains"  className="sf-with">
                       Terrain
-=======
-                    <Link to="/events"  className="sf-with">
-                      Evenement
->>>>>>> bef6d64f8c90ad63c251cb496d51da46f066e106
                     </Link>
                   </li>
                 </ul>
