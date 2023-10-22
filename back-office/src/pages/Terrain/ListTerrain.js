@@ -6,11 +6,16 @@ import {
   TableRow,
   TableCell,
   IconButton,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
  
 } from '@mui/material';
-import { Delete, Visibility, Edit } from '@mui/icons-material';
+import { Delete, Visibility, Edit ,SearchOutlined} from '@mui/icons-material';
 import { styled } from '@mui/system';
 import axios from 'axios';
+import { Box } from '@mui/system';
+
 import ReactPaginate from 'react-paginate';
 
 axios.defaults.withCredentials = false;
@@ -31,7 +36,10 @@ const ListTerrain = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchValue, setSearchValue] = useState(''); 
   const itemsPerPage = 5;
+  
+  // const [searchValue, setSearchValue] = useState('');
 //   const [dialogOpen, setDialogOpen] = useState(false);
   // const selectedTerrain and setSearchValue removed as they are not used
 
@@ -47,6 +55,35 @@ const ListTerrain = () => {
       setError('Failed to fetch terrain list. Please try again later.');
       setIsLoading(false);
     }
+  };
+  // const handleSearch = (searchTerm) => {
+  //   const filteredTerrains = terrains.filter((terrain) => {
+     
+  //     return (
+  //       terrain.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       terrain.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       terrain.emplacement.toLowerCase().includes(searchTerm.toLowerCase())
+  //     );
+  //   });
+
+  //   setTerrains(filteredTerrains);
+  // };
+  const fetchTerrainsByType = async (type) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`http://localhost:8093/Terrain/terrains/type?type=${type}`);
+      setTerrains(response.data);
+      setIsLoading(false);
+      setError('');
+    } catch (error) {
+      console.error('Erreur lors de la récupération des terrains par type:', error);
+      setError('Échec de la récupération des terrains par type. Veuillez réessayer ultérieurement.');
+      setIsLoading(false);
+    }
+  };
+
+  const handleFilterByType = (type) => {
+    fetchTerrainsByType(type);
   };
   const handleDeleteTerrain = async (idTerrain) => {
     try {
@@ -70,7 +107,48 @@ const ListTerrain = () => {
 
   return (
     <>
+
       {error && <p>{error}</p>}
+      <div className="button-container">
+      <button className="icon-button" onClick={() => handleFilterByType('football')}>
+        <i className="fas fa-futbol"></i> Football
+      </button>
+      <button className="icon-button" onClick={() => handleFilterByType('handball')}>
+        <i className="fas fa-hand-paper"></i> Handball
+      </button>
+      <button className="icon-button" onClick={() => handleFilterByType('basketball')}>
+        <i className="fas fa-basketball-ball"></i> Basketball
+      </button>
+      <button className="icon-button" onClick={() => handleFilterByType('tennis')}>
+        <i className="fas fa-tennis-ball"></i> Tennis
+      </button>
+      <button className="icon-button" onClick={() => handleFilterByType('volleyball')}>
+        <i className="fas fa-volleyball-ball"></i> Volleyball
+      </button>
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ marginLeft: 'auto' }}>
+          <FormControl sx={{ width: { xs: '100%', md: 224 } }}>
+            <OutlinedInput
+              size="small"
+              id="header-search"
+              startAdornment={
+                <InputAdornment position="start" sx={{ mr: -0.5 }}>
+                  <SearchOutlined />
+                </InputAdornment>
+              }
+              aria-describedby="header-search-text"
+              inputProps={{
+                'aria-label': 'weight'
+              }}
+              placeholder="Chercher terrain"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+          </FormControl>
+        </Box>
+      </div>
+    
       <StyledTable>
         <TableHead>
           <TableRow>

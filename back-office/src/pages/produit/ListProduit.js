@@ -102,7 +102,7 @@ const ListProduit = () => {
 
   const handleConfirmDeleteProduit = () => {
     axios
-      .delete(`http://localhost:8086/produit/deleteProduit/${selectedProduit}`)
+      .delete(`http://localhost:5000/produit/deleteProduit/${selectedProduit}`)
       .then(() => {
         console.log('Produit deleted successfully');
         setProduits(produits.filter((produit) => produit._id !== selectedProduit));

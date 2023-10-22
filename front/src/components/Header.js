@@ -127,6 +127,9 @@ const Header = () => {
                     <Link to="/reservation"  className="sf-with">
                     Reservation
                     </Link>
+                    <Link to="/terrains"  className="sf-with">
+                      Terrain
+                    </Link>
                   </li>
                 </ul>
               </nav>

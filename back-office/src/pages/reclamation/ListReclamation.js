@@ -66,7 +66,7 @@ const ListReclamation = () => {
 
   const handleConfirmDeleteReclamation = () => {
     axios
-      .delete(`http://localhost:8086/api/Reclamation/delete/${selectedReclamation}`)
+      .delete(`http://localhost:8082/api/Reclamation/delete/${selectedReclamation}`)
       .then(() => {
         console.log('Reclamation deleted successfully');
         setReclamations(reclamations.filter((reclamation) => reclamation.id !== selectedReclamation));
