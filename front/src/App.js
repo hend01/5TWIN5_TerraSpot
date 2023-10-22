@@ -6,11 +6,15 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import NotFound from "./NotFound";
 import { CartProvider } from "./contexte/CartContext";
+import React from 'react';
+
 import Cart from "./components/cart/Cart";
 import Checkout from "./components/checkout/Checkout";
 import Reclamation from "./components/reclamation/addReclamation";
 import HomeRes from "./components/home/HomeRes";
 import Events from "./components/Events/Events";
+import Terrain from "./components/Terrain/ListTerrain";
+
 
 function App() {
   return (
@@ -25,6 +29,8 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/reclamation" element={<Reclamation />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/terrains" element={<Terrain />} />
+
           <Route path="/Notfound" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />{" "}
           {/* Route générique pour toutes les autres URL */}
