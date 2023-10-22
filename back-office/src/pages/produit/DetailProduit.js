@@ -29,7 +29,7 @@ const DetailProduit = () => {
 
   const handleConfirmDeleteProduit = () => {
     axios
-      .delete(`http://localhost:8086/produit/deleteProduit/${produitId}`)
+      .delete(`http://localhost:5000/produit/deleteProduit/${produitId}`)
       .then(() => {
         console.log('Produit deleted successfully');
         navigate('/produit-list');
