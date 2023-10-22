@@ -20,7 +20,7 @@ function AddReservation() {
     description: "",
   });
 
-  const terrainOptions = ["Option 1", "Option 2", "Option 3", "Option 4"]; 
+  const terrainOptions = ["Maracana", "Wimbledon", "Dodger Stadium", "Santiago Bernabéu"]; 
   const navigateToListPage = () => {
     navigate('/list');
   };
