@@ -123,6 +123,11 @@ const Header = () => {
                       Reclamation
                     </Link>
                   </li>
+                  <li>
+                    <Link to="/reservation"  className="sf-with">
+                    Reservation
+                    </Link>
+                  </li>
                 </ul>
               </nav>
             </div>

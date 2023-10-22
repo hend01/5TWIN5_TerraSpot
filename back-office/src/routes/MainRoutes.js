@@ -29,6 +29,8 @@ const UpdateTerrain = Loadable(lazy(() => import('pages/Terrain/UpdateTerrain'))
 const ReclamationList = Loadable(lazy(() => import('pages/reclamation/ListReclamation')));
 const ReclamationDetail = Loadable(lazy(() => import('pages/reclamation/DetailReclamation')));
 
+const Listreservation = Loadable(lazy(() => import('pages/reservations/List')));
+
 // render - event
 const AddEvent = Loadable(lazy(() => import('pages/events/AddEvent')));
 const ListEvent = Loadable(lazy(() => import('pages/events/ListEvents')));
@@ -119,6 +121,10 @@ const MainRoutes = {
     {
       path: 'commandes/edit/:commandeId',
       element: <UpdateCommande />
+    },
+    {
+      path: 'reservation-list',
+      element: <Listreservation />
     },
 
     {

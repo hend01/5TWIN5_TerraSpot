@@ -1,0 +1,24 @@
+/* Add spacing and styles to the table elements */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .table th {
+    color: #aa9e9e;
+  }
+  
+  /* Adjust button styles as needed */
+  .btn {
+    margin-right: 10px;
+  }
+  
+  /* In a CSS file or a <style> tag in your component */
+
+  
